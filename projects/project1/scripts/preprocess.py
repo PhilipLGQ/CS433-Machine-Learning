@@ -38,6 +38,19 @@ def split_reformat_data(feature, label, id):
     return f0, f1, f23, l0, l1, l23, _ids
 
 
+def split_reformat_test(feature, id):
+    f0 = np.delete(feature[feature[:,22] == 0], np.r_[4:7, 12, 22:30], axis=1)
+    f1 = np.delete(feature[feature[:,22] == 1], np.r_[4:7, 12, 22, 26:29], axis=1)
+    f2 = np.delete(feature[feature[:,22] == 2], np.r_[22], axis=1)
+    f3 = np.delete(feature[feature[:,22] == 3], np.r_[22], axis=1)
+    f23 = np.concatenate((f2, f3))
+
+    _ids = np.concatenate((id[feature[:,22] == 0], id[feature[:,22] == 1],
+                           id[feature[:,22] == 2], id[feature[:,22] == 3]))
+
+    return f0, f1, f23, _ids
+
+
 def replace_missing_value(data, col, func='median'):
     if func == 'median':
         rep = np.median(data[data[:, col] != -999][:, col])

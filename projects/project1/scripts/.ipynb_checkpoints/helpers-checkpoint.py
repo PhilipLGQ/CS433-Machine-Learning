@@ -24,7 +24,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 
 def build_poly(x, degree):
-    poly = np.ones(len(x), 1)
+    poly = np.ones((len(x), 1))
     for degrees in range(1, degree):
         poly = np.c_[poly, np.power(x, degrees)]
 
