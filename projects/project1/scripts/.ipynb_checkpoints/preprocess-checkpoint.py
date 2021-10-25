@@ -65,21 +65,19 @@ def reorder_id(feature, ID):
     return _ids
 
 
-def split_reformat_train(feature, label, _ids):
+def split_reformat_train(feature, label):
     
     f_arr = split_reformat_feature(feature)
     l_arr = split_label(feature, label)
-    i = reorder_id(feature, _ids)
 
-    return f_arr, l_arr, i
+    return f_arr, l_arr
 
 
-def split_reformat_test(feature, _ids):
+def split_reformat_test(feature):
     
     f_arr = split_reformat_feature(feature)
-    i = reorder_id(feature, _ids)
 
-    return f_arr, i
+    return f_arr
 
 
 def replace_missing_value(data, col, func='median'):
