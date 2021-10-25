@@ -22,36 +22,64 @@ def normalize(tx):
     return np.transpose(tx_T_norm)
 
 
-def split_reformat_data(feature, label, id):
+def split_reformat_feature(feature):
+    
+    f_arr = []
+    
     f0 = np.delete(feature[feature[:,22] == 0], np.r_[4:7, 12, 22:30], axis=1)
     f1 = np.delete(feature[feature[:,22] == 1], np.r_[4:7, 12, 22, 26:29], axis=1)
     f2 = np.delete(feature[feature[:,22] == 2], np.r_[22], axis=1)
     f3 = np.delete(feature[feature[:,22] == 3], np.r_[22], axis=1)
     f23 = np.concatenate((f2, f3))
+    
+    f_arr.append(f0)    
+    f_arr.append(f1)
+    f_arr.append(f23)
+    
+    # Replacing the missing values of first feature column with median
+    # Standardize data
+    for idx, elem in enumerate(f_arr):
+        replace_missing_value(elem, 0, 'median')
+        f_arr[idx] = standardize(elem)
+    
+    return f_arr
 
+
+def split_label(feature, label):
+    l_arr = []
+    
     l0, l1 = label[feature[:,22] == 0], label[feature[:,22] == 1]
     l23 = np.concatenate((label[feature[:,22] == 2], label[feature[:,22] == 3]))
+    
+    l_arr.append(l0)    
+    l_arr.append(l1)
+    l_arr.append(l23)
+    
+    return l_arr
 
-    _ids = np.concatenate((id[feature[:,22] == 0], id[feature[:,22] == 1],
-                           id[feature[:,22] == 2], id[feature[:,22] == 3]))
 
-    return f0, f1, f23, l0, l1, l23, _ids
+def reorder_id(feature, ID):
+    _ids = np.concatenate((ID[feature[:,22] == 0], ID[feature[:,22] == 1],
+                           ID[feature[:,22] == 2], ID[feature[:,22] == 3]))
+    
+    return _ids
 
 
-def split_reformat_test(feature, id):
-    f0 = np.delete(feature[feature[:,22] == 0], np.r_[4:7, 12, 22:30], axis=1)
-    f1 = np.delete(feature[feature[:,22] == 1], np.r_[4:7, 12, 22, 26:29], axis=1)
-    f2 = np.delete(feature[feature[:,22] == 2], np.r_[22], axis=1)
-    f3 = np.delete(feature[feature[:,22] == 3], np.r_[22], axis=1)
-    f23 = np.concatenate((f2, f3))
+def split_reformat_train(feature, label, _ids):
+    
+    f_arr = split_reformat_feature(feature)
+    l_arr = split_label(feature, label)
+    i = reorder_id(feature, _ids)
 
-    l0, l1 = label[feature[:,22] == 0], label[feature[:,22] == 1]
-    l23 = np.concatenate((label[feature[:,22] == 2], label[feature[:,22] == 3]))
+    return f_arr, l_arr, i
 
-    _ids = np.concatenate((id[feature[:,22] == 0], id[feature[:,22] == 1],
-                           id[feature[:,22] == 2], id[feature[:,22] == 3]))
 
-    return f0, f1, f23, l0, l1, l23, _ids
+def split_reformat_test(feature, _ids):
+    
+    f_arr = split_reformat_feature(feature)
+    i = reorder_id(feature, _ids)
+
+    return f_arr, i
 
 
 def replace_missing_value(data, col, func='median'):
