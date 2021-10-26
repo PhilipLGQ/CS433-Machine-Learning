@@ -21,5 +21,3 @@ def calculate_loss_logistic(y, tx, w):
     loss = np.squeeze(loss)
 
     return loss
-
-

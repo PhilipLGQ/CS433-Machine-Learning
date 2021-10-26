@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 """some helper functions for project 1."""
+from helpers import *
 import csv
 import numpy as np
+
 
 
 def load_csv_data(data_path, sub_sample=False):
@@ -31,6 +33,28 @@ def predict_labels(weights, data):
     y_pred[np.where(y_pred > 0)] = 1
     
     return y_pred
+
+
+def data_pred(tx, w, step='tr'):
+    pred = []
+
+    for idx, weight in enumerate(w):
+        poly_tx = build_poly(tx[idx], len(weight)-1)
+        pred.extend(predict_labels(weight, poly_tx))
+
+    if step == 'te':
+        pred_pair = [(i, j) for i, j in zip(id, pred)]
+        pred = [label for _, label in sorted(pred_pair)]
+
+    return pred
+
+
+def accuracy_pred(pred, y, id):
+    pred_pair = [(i, j) for i, j in zip(id, pred)]
+    pred_list = [label for _, label in sorted(pred_pair)]
+
+    accuracy = sum(pred_list == y) / len(y)
+    return accuracy
 
 
 def create_csv_submission(ids, y_pred, name):

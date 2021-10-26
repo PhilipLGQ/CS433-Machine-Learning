@@ -8,40 +8,45 @@
 
 
 from costs import *
-from helpers import *
 import numpy as np
 
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
-    ws = [initial_w]
     losses = []
+    tx = np.c_[np.ones((tx.shape[0], 1)), tx]
+
     w = initial_w
+    ws = [initial_w]
 
     for n_iter in range(max_iters):
         grad, _ = compute_gradient(y, tx, w)
         loss = compute_loss_mse(y, tx, w)
         w = w - grad * gamma
+
         ws.append(w)
         losses.append(loss)
 
     return ws[-1], losses[-1]
 
 
-def least_squares_SGD(y, tx, initial_w, max_iters, gamma):
-    ws = [initial_w]
+def least_squares_SGD(y, tx, initial_w, max_iters, gamma, batch_size=1):
     losses = []
+    tx = np.c_[np.ones((tx.shape[0], 1)), tx]
+
     w = initial_w
-    batch_size = 1
+    ws = [initial_w]
 
     for n_iter in range(max_iters):
         for tx_batch, y_batch in batch_iter(y, tx, batch_size, num_batches=1):
             grad, _ = compute_gradient(y_batch, tx_batch, w)
             loss = compute_loss_mse(y_batch, tx_batch, w)
             w = w - grad * gamma
-
+            
             ws.append(w)
             losses.append(loss)
 
+        print('loss={a}, iteration={b}'.format(a=losses[-1], b=n_iter))
+                                                
     return ws[-1], losses[-1]
 
 
@@ -58,15 +63,16 @@ def ridge_regression(y, tx, lambda_):
     # Solve the linear system for ridge w*
     w = np.linalg.solve(LHS, RHS)
 
-    # Here we calculate root mse (RMSE) as loss instead of mse
+    # Here we calculate root mse as loss
     loss = np.sqrt(2 * compute_loss_mse(y, tx, w))
 
     return w, loss
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma):
-    # threshold = 1e-8
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold):
     losses = []
+    tx = np.c_[np.ones((tx.shape[0], 1)), tx]
+
     w = initial_w
     ws = [initial_w]
 
@@ -74,12 +80,19 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma):
         w, loss = learning_by_GD_logistic(y, tx, w, gamma)
         losses.append(loss)
         ws.append(w)
+        
+        # log info
+        if i % 100 == 0:
+            print("Current iteration={a}, loss={b}".format(a=i, b=losses[-1]))
+            
+        # Converge Criterion
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
 
     return ws[-1], losses[-1]
 
 
-def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
-    # threshold = 1e-8
+def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, threshold):
     losses = []
     w = initial_w
     ws = [initial_w]
@@ -89,5 +102,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma):
         losses.append(loss)
         ws.append(w)
 
-    return ws[-1], loss[-1]
+        if i % 100 == 0:
+            print("Current iteration={a}, loss={b}".format(a=i, b=loss))
 
+        # Converge Criterion
+        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
+            break
+
+    return ws[-1], losses[-1]

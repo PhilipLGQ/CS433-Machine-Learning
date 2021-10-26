@@ -1,6 +1,7 @@
 # helpers.py
 
 from costs import *
+from cross_validation import *
 import numpy as np
 
 
@@ -24,7 +25,7 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 
 def build_poly(x, degree):
-    poly = np.ones(len(x), 1)
+    poly = np.ones((len(x), 1))
     for degrees in range(1, degree):
         poly = np.c_[poly, np.power(x, degrees)]
 
@@ -35,6 +36,36 @@ def compute_gradient(y, tx, w):
     e = y - tx.dot(w)
     grad = -tx.T.dot(e) / len(y)
     return grad, e
+
+
+def find_optimal(y, tx, degrees, k_fold, lambdas, seed=1):
+    # Split the data into k-fold
+    k_indices = build_k_indices(y, k_fold, seed)
+    
+    # Set lists for collecting best lambda & rmse for each degree
+    best_lambda = []
+    best_rmse = []
+    
+    for degree in degrees:
+        rmse_val = []
+        
+        for lambda_ in lambdas:
+            rmse_val_lambda_ = []
+            
+            for k in range(k_fold):
+                _, loss_val, w = cross_validation(y, tx, k_indices, k, lambda_, degree)
+                rmse_val_lambda_.append(loss_val)
+
+            rmse_val.append(np.mean(rmse_val_lambda_))
+        
+        index_opt_lambda = np.argmin(rmse_val)
+        best_lambda.append(lambdas[index_opt_lambda])
+        best_rmse.append(rmse_val[index_opt_lambda])
+    
+    opt_degree = degrees[np.argmin(best_rmse)]
+    opt_lambda = best_lambda[np.argmin(best_rmse)]
+    
+    return opt_degree, opt_lambda
 
 
 def sigmoid(t):
