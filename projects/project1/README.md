@@ -15,6 +15,16 @@ matplotlib.pyplot (as plt)
 ## Running Prerequisites
 Before running the scripts and notebook files, you should keep the folder structure under folder **scripts** as follows:
 
+
+  .
+├── Data                    # Data files, in .csv
+    ├── train.csv
+    └── test.csv
+├── src                     # Source files
+└── README.md
+
+  
+  
   .
   ├── costs.py
   ├── cross_validation.py
