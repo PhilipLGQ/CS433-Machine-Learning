@@ -63,5 +63,5 @@ Script that contains the functions to calculate the loss functions for implement
 
 ## Authors
 * *Guanqun Liu*
-* *Yixuan Xu*
+* [*Yixuan Xu*](https://github.com/Alvorecer721)
 * *Xianjie Dai*
