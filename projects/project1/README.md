@@ -9,6 +9,7 @@ Provided scripts and notebook files were built and tested with a conda environme
 The following external libraries are used within the scripts:
 
 numpy (as np)
+
 matplotlib.pyplot (as plt)
 
 
