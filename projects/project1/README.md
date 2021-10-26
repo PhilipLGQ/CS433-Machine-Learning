@@ -15,19 +15,20 @@ matplotlib.pyplot (as plt)
 ## Running Prerequisites
 Before running the scripts and notebook files, you should keep the folder structure under folder **scripts** as follows:
 
-.
-├── costs.py
-├── cross_validation.py
-├── data
-│   ├── test.csv               # training set, extract first
-│   └── train.csv              # test set, extract first
-├── dataplot.py
-├── helpers.py
-├── implementations.py
-├── preprocess.py
-├── proj1_helpers.py
-├── project1.ipynb
-└── run.py
+  .
+  ├── costs.py
+  ├── cross_validation.py
+  ├── data
+  │   ├── test.csv               # training set, extract first
+  │   └── train.csv              # test set, extract first
+  ├── dataplot.py
+  ├── helpers.py
+  ├── implementations.py
+  ├── preprocess.py
+  ├── proj1_helpers.py
+  ├── project1.ipynb
+  └── run.py
+
 
 All scripts are placed under the **scripts** folder, and you can find the code that generates our prediction file pred.csv in 'run.py'.
 
