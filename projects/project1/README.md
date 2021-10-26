@@ -35,9 +35,33 @@ Before running the scripts and notebook files, you should keep the folder struct
 All scripts are placed under the **scripts** folder, and you can find the code that generates our prediction file pred.csv in 'run.py'.
 
 
-## Script Details
+## Implementation Details
 
 #### 'costs.py'
 Script that contains the functions to calculate the loss functions for implemented machine learning algorithms.
 
 #### 'implementations.py'
+
+
+#### 'preprocess.py'
+
+
+#### 'proj1_helpers.py'
+
+
+#### 'helpers.py'
+
+
+#### 'cross_validation.py'
+
+
+#### 'project1.ipynb'
+
+
+## Notes
+
+
+## Authors
+* *Guanqun Liu*
+* *Yixuan Xu*
+* *Xianjie Dai*
