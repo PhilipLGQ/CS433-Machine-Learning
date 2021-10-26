@@ -8,24 +8,15 @@ Detailed project outlines and requirements can be found in the [project descript
 Provided scripts and notebook files were built and tested with a conda environment with python version 3.7.11. 
 The following external libraries are used within the scripts:
 
+```bash
 numpy (as np)
-
 matplotlib.pyplot (as plt)
-
+```
 
 ## Running Prerequisites
 Before running the scripts and notebook files, you should keep the folder structure under folder **scripts** as follows:
 
-
-  .
-├── Data                    # Data files, in .csv
-    ├── train.csv
-    └── test.csv
-├── src                     # Source files
-└── README.md
-
-  
-  
+```bash
   .
   ├── costs.py
   ├── cross_validation.py
@@ -39,7 +30,7 @@ Before running the scripts and notebook files, you should keep the folder struct
   ├── proj1_helpers.py
   ├── project1.ipynb
   └── run.py
-
+```
 
 All scripts are placed under the **scripts** folder, and you can find the code that generates our prediction file pred.csv in 'run.py'.
 
