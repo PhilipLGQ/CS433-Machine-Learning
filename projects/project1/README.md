@@ -46,7 +46,6 @@ Script that contains the functions to calculate the loss functions for implement
 #### 'implementations.py'
 Script that implements the machine learning algorithms according to the following table:
 
-
 | Function            | Parameters | Details |
 |-------------------- |-----------|---------|
 | `least_squares_GD`  | `y, tx, initial_w, max_iters, gamma`  | Linear Regression by Gradient Descent |
@@ -56,6 +55,7 @@ Script that implements the machine learning algorithms according to the followin
 | `logistic_regression`| `y, x, initial_w, max_iters, gamma` | Logistic Regression by Gradient Descent |
 | `reg_logistic_regression` | `y, x, lambda_, initial_w, max_iters, gamma` | Regularized Logistic Regression by Gradient Descent |
 
+All functions returns a set of two key values: `w, loss`, where `w` indicates the last weight vector of the algorithm, and `loss` corresponds to this weight `w`.
 
 #### 'preprocess.py'
 
@@ -78,4 +78,4 @@ Script that implements the machine learning algorithms according to the followin
 ## Authors
 * *Guanqun Liu*
 * [*Yixuan Xu*](https://github.com/Alvorecer721)
-* *Xianjie Dai*
+* [*Xianjie Dai*](https://github.com/xianjiedai)
