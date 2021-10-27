@@ -46,16 +46,16 @@ Script that contains the functions to calculate the loss functions for implement
 #### 'implementations.py'
 Script that implements the machine learning algorithms according to the following table:
 
-```bash
+
 | Function            | Parameters | Details |
 |-------------------- |-----------|---------|
 | `least_squares_GD`  | `y, tx, initial_w, max_iters, gamma`  | Linear Regression by Gradient Descent |
 | `least_squares_SGD` | `y, tx, initial_w, max_iters, gamma`  | Linear Regression by Stochastic Gradient Descent |
-| `least_squares`     | `y, tx` | Linear Regression by Solving Normal Equation
-| `ridge_regression`  | `y, tx, lambda_` | Ridge Regression by Soving Normal Equation
-| `logistic_regression`| `y, x, initial_w, max_iters, gamma` | Logistic Regression by Gradient Descent
-| `reg_logistic_regression` | `y, x, lambda_, initial_w, max_iters, gamma` | Regularized Logistic Regression by Gradient Descent
-```
+| `least_squares`     | `y, tx` | Linear Regression by Solving Normal Equation |
+| `ridge_regression`  | `y, tx, lambda_` | Ridge Regression by Soving Normal Equation |
+| `logistic_regression`| `y, x, initial_w, max_iters, gamma` | Logistic Regression by Gradient Descent |
+| `reg_logistic_regression` | `y, x, lambda_, initial_w, max_iters, gamma` | Regularized Logistic Regression by Gradient Descent |
+
 
 #### 'preprocess.py'
 
