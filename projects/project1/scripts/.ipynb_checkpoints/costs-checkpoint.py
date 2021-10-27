@@ -9,6 +9,7 @@ def compute_mse(e):
 
 
 def compute_loss_mse(y, tx, w):
+    
     e = y - tx.dot(w)
     loss = compute_mse(e)
     return loss
