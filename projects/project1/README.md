@@ -93,7 +93,7 @@ Notebook file contains code demonstrating our training and validation process of
 We reserved the block outputs to show the hyperparameter setting with metrics for your reference.
 
 
-## Notes
+## Performance & Hyper-parameters
 TBD
 
 
