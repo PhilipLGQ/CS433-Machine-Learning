@@ -69,7 +69,7 @@ def ridge_regression(y, tx, lambda_):
     return w, loss
 
 
-def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold):
+def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold, ):
     losses = []
     tx = np.c_[np.ones((tx.shape[0], 1)), tx]
 
@@ -77,7 +77,7 @@ def logistic_regression(y, tx, initial_w, max_iters, gamma, threshold):
     ws = [initial_w]
 
     for i in range(max_iters):
-        w, loss = learning_by_GD_logistic(y, tx, w, gamma)
+        w, loss = learning_by_SGD_logistic(y, tx, w, gamma)
         losses.append(loss)
         ws.append(w)
         

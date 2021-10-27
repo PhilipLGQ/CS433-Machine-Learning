@@ -103,6 +103,14 @@ def learning_by_GD_logistic(y, tx, w, gamma):
 
     return w, loss
 
+def learning_by_SGD_logistic(y, tx, w, gamma):
+    for tx_batch, y_batch in batch_iter(y, tx, batch_size, num_batches=1)
+        loss = calculate_loss_logistic(y_batch, tx_batch, w)
+        grad = calculate_gradient_logistic(y_batch, tx_batch, w)
+        w = w - gamma * grad
+
+    return w, loss
+
 
 def penalized_logistic_regression(y, tx, w, lambda_):
     # return loss, gradient, and hessian

@@ -49,7 +49,7 @@ def data_pred(tx, w, step='tr'):
     return pred
 
 
-def accuracy_pred(pred, y, id):
+def metric_pred(pred, y, id):
     pred_pair = [(i, j) for i, j in zip(id, pred)]
     pred_list = [label for _, label in sorted(pred_pair)]
 
