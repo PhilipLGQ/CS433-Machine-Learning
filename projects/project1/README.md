@@ -38,14 +38,19 @@ All scripts are placed under the **scripts** folder, and you can find the code t
 ## Implementation Details
 
 #### `'run.py'`
-Script that contains the best algorithm implemented, with the generation of corresponding prediction file under `./data/pred.csv`. It executes the following steps to get the test set prediction:
+Script that contains the best algorithm implemented, with the generation of corresponding prediction file under `./scripts/data/pred.csv`. It executes the following steps to get the test set prediction:
 
-* Load the training dataset into feature matrix(X), class labels(Y, -1 or 1), and event ids(ID for reordering prediction)
+* Load the training dataset into feature matrix(X), class labels(Y, -1 or 1), and event ids
 * Data preprocessing
      
         - Split the data into 3 sub-datasets based on 'PRI_jet_num' (0, 1, 2 & 3 for each sub-dataset)
         - impute the missing values with k-means clustering / linear regression / median / mean / '0' 
         - Standardize and/or normalize the sub-datasets
+
+* Train a ridge regression model with 10-fold cross validation, with an automatic process of finding the best degree and lambda
+* Train a ridge regression model on the complete training set, using the best degreee and lambda
+* Load the test dasaset into feature matrix(X) and event ids(ID for reordering prediction)
+* Compute and generate a prediction csv file `./scripts/data/pred.csv`
 
 
 #### `'costs.py'`
@@ -89,6 +94,7 @@ We reserved the block outputs to show the hyperparameter setting with metrics fo
 
 
 ## Notes
+TBD
 
 
 ## Authors
