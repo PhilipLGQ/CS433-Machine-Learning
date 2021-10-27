@@ -32,7 +32,7 @@ Before running the scripts and notebook files, you should keep the folder struct
   └── run.py
 ```
 
-All scripts are placed under the **scripts** folder, and you can find the code that generates our prediction file pred.csv in 'run.py'.
+All scripts are placed under the **scripts** folder, and you can find the code that generates our prediction file pred.csv in `run.py`.
 
 
 ## Implementation Details
@@ -44,7 +44,7 @@ All scripts are placed under the **scripts** folder, and you can find the code t
 Script that contains the functions to calculate the loss functions for implemented machine learning algorithms.
 
 #### 'implementations.py'
-Script that implements the machine learning algorithms according to the following table:
+Script that contains the implementation of machine learning algorithms according to the following table:
 
 | Function            | Parameters | Details |
 |-------------------- |-----------|---------|
@@ -58,19 +58,20 @@ Script that implements the machine learning algorithms according to the followin
 All functions returns a set of two key values: `w, loss`, where `w` indicates the last weight vector of the algorithm, and `loss` corresponds to this weight `w`.
 
 #### 'preprocess.py'
-
+Script that contains our methods to preprocess both the training and the test dataset. 
 
 #### 'proj1_helpers.py'
-
+Script that contains 
 
 #### 'helpers.py'
-
+Script that contains 
 
 #### 'cross_validation.py'
-
+Script that contains functions to carry-out a k-fold cross validation on the training dataset.
 
 #### 'project1.ipynb'
-
+Notebook file contains code demonstrating our training and validation process of implemented machine learning algorithms (stated in `implementation.py`). 
+We reserved the block outputs to show the hyperparameter setting with metrics for your reference.
 
 ## Notes
 
