@@ -2,7 +2,7 @@
 
 The "Higgs Boson" is an elementary particle belonging to the Standard Model of particle physics. It is produced by exerting the quantum excitation of the Higgs field. Due to its rapidness of decay, scientists found it difficult to directly observe its decay signal due to background noise. The goal of this machine learning challenge is to improve the discovery significance of the particle by classifying provided data events into "tau tau decay of Higgs Boson" or "background". The aim of this project is to realize a satisfying performance on binary classification.
 
-Detailed project outlines and requirements can be found in the [project description](./projects/project1/project1_description.pdf). This challenge includes an [AIcrowd online contest] (https://www.aicrowd.com/challenges/epfl-machine-learning-higgs), the original kaggle contest is [Higgs Boson Machine Learning Challenge](https://www.kaggle.com/c/higgs-boson) (2014).
+Detailed project outlines and requirements can be found in the [project description](./project1_description.pdf). This challenge includes an [AIcrowd online contest] (https://www.aicrowd.com/challenges/epfl-machine-learning-higgs), the original kaggle contest is [Higgs Boson Machine Learning Challenge](https://www.kaggle.com/c/higgs-boson) (2014).
 
 ## Getting Started
 Provided scripts and notebook files were built and tested with a conda environment with python version 3.7.11. 
