@@ -38,6 +38,14 @@ All scripts are placed under the **scripts** folder, and you can find the code t
 ## Implementation Details
 
 #### `'run.py'`
+Script that contains the best algorithm implemented, with the generation of corresponding prediction file under `./data/pred.csv`. It executes the following steps to get the test set prediction:
+
+* Load the training dataset into feature matrix(X), class labels(Y, -1 or 1), and event ids(ID for reordering prediction)
+* Data preprocessing
+     
+        - Split the data into 3 sub-datasets based on 'PRI_jet_num' (0, 1, 2 & 3 for each sub-dataset)
+        - impute the missing values with k-means clustering / linear regression / median / mean / '0' 
+        - Standardize and/or normalize the sub-datasets
 
 
 #### `'costs.py'`
@@ -53,8 +61,8 @@ Script that contains the implementation of machine learning algorithms according
 | `least_squares_SGD` | `y, tx, initial_w, max_iters, gamma`  | Linear Regression by Stochastic Gradient Descent |
 | `least_squares`     | `y, tx` | Linear Regression by Solving Normal Equation |
 | `ridge_regression`  | `y, tx, lambda_` | Ridge Regression by Soving Normal Equation |
-| `logistic_regression`| `y, x, initial_w, max_iters, gamma` | Logistic Regression by Gradient Descent |
-| `reg_logistic_regression` | `y, x, lambda_, initial_w, max_iters, gamma` | Regularized Logistic Regression by Gradient Descent |
+| `logistic_regression`| `y, tx, initial_w, max_iters, gamma, threshold, batch_size` | Logistic Regression by Stochastic Gradient Descent |
+| `reg_logistic_regression` | `y, tx, lambda_, initial_w, max_iters, gamma, threshold, batch_size` | Regularized Logistic Regression by Stochastic Gradient Descent |
 
 All functions returns a set of two key values: `w, loss`, where `w` indicates the last weight vector of the algorithm, and `loss` corresponds to this weight `w`.
 
