@@ -37,13 +37,14 @@ All scripts are placed under the **scripts** folder, and you can find the code t
 
 ## Implementation Details
 
-#### 'run.py'
+#### `'run.py'`
 
 
-#### 'costs.py'
+#### `'costs.py'`
 Script that contains the functions to calculate the loss functions for implemented machine learning algorithms.
 
-#### 'implementations.py'
+
+#### `'implementations.py'`
 Script that contains the implementation of machine learning algorithms according to the following table:
 
 | Function            | Parameters | Details |
@@ -57,21 +58,27 @@ Script that contains the implementation of machine learning algorithms according
 
 All functions returns a set of two key values: `w, loss`, where `w` indicates the last weight vector of the algorithm, and `loss` corresponds to this weight `w`.
 
-#### 'preprocess.py'
-Script that contains our methods to preprocess both the training and the test dataset. 
 
-#### 'proj1_helpers.py'
-Script that contains 
+#### `'preprocess.py'`
+Script that contains functions for preprocessing both the training and the test dataset. 
 
-#### 'helpers.py'
-Script that contains 
 
-#### 'cross_validation.py'
-Script that contains functions to carry-out a k-fold cross validation on the training dataset.
+#### `'proj1_helpers.py'`
+Script that contains functins for loading the dataset and creating the prediction files. 
 
-#### 'project1.ipynb'
+
+#### `'helpers.py'`
+Script that contains functions for basic key value (gradient, hessian, sigmoid, `(w, loss)`) calculation and a batch iteration function for implementing stochastic gradient descent.
+
+
+#### `'cross_validation.py'`
+Script that contains functions to carry-out a k-fold cross validation on the training dataset. 
+
+
+#### `'project1.ipynb'`
 Notebook file contains code demonstrating our training and validation process of implemented machine learning algorithms (stated in `implementation.py`). 
 We reserved the block outputs to show the hyperparameter setting with metrics for your reference.
+
 
 ## Notes
 
