@@ -103,10 +103,11 @@ def reg_logistic_regression(y, tx, lambda_, initial_w, max_iters, gamma, thresho
         ws.append(w)
 
         if i % 100 == 0:
-            print("Current iteration={a}, loss={b}".format(a=i, b=loss))
+            print("Current iteration={}".format(i))
 
         # Converge Criterion
-        if len(losses) > 1 and np.abs(losses[-1] - losses[-2]) < threshold:
-            break
+        if len(losses) > 1:
+            if np.abs(losses[-1] - losses[-2]) < threshold:
+                break
 
     return ws[-1], losses[-1]

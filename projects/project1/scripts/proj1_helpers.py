@@ -35,25 +35,22 @@ def predict_labels(weights, data):
     return y_pred
 
 
-def data_pred(tx, w, step='tr'):
+def data_pred(tx, w, ids):
     pred = []
 
     for idx, weight in enumerate(w):
         poly_tx = build_poly(tx[idx], len(weight)-1)
         pred.extend(predict_labels(weight, poly_tx))
 
-    if step == 'te':
-        pred_pair = [(i, j) for i, j in zip(id, pred)]
-        pred = [label for _, label in sorted(pred_pair)]
+    pred_pair = [(i, j) for i, j in zip(ids, pred)]
+    pred_reordered = [label for _, label in sorted(pred_pair)]
 
-    return pred
+    return pred_reordered
 
 
-def metric_pred(pred, y, id):
-    pred_pair = [(i, j) for i, j in zip(id, pred)]
-    pred_list = [label for _, label in sorted(pred_pair)]
+def metric_pred(pred, y):
+    accuracy = sum(pred == y) / len(y)
 
-    accuracy = sum(pred_list == y) / len(y)
     return accuracy
 
 
