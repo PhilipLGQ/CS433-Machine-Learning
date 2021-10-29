@@ -26,6 +26,21 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 
+def generate_weights(tx, y, best_d, best_l, best_k, ids):
+    weights = []
+    feature_arr, label_arr, _ = split_reformat_data(tx, y, ids, best_k)
+
+    for idx, (f, l) in enumerate(zip(feature_arr, label_arr)):
+        # Polynomial Feature Transform
+        poly_feature = build_poly(f, best_d[idx])
+
+        # Training ridge regression on the entire training
+        w, = ridge_regression(l, poly_feature, best_l[idx])
+        weights.append(w)
+
+    return weights
+
+
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)

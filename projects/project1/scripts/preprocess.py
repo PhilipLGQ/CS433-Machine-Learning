@@ -22,13 +22,8 @@ def normalize(tx):
     return np.transpose(tx_T_norm)
 
 
-def std_norm_preprocess(tx, func='std_norm'):
-    if func == 'std_norm':
-        tx_std = standardize(tx)
-        tx_std_norm = normalize(tx_std)
-        return tx_std_norm
-
-    elif func == 'std':
+def std_norm_preprocess(tx, func='std'):
+    if func == 'std':
         tx_std = standardize(tx)
         return tx_std
 
@@ -37,7 +32,8 @@ def std_norm_preprocess(tx, func='std_norm'):
         return tx_norm
 
 
-def split_reformat_data(feature, label, id):
+def split_reformat_data(feature, label, id, best_k=[]):
+
     f_arr = []
     l_arr = []
 
@@ -45,39 +41,57 @@ def split_reformat_data(feature, label, id):
     f1 = np.delete(feature[feature[:, 22] == 1], np.r_[4:7, 12, 22, 26:29], axis=1)
     f2 = np.delete(feature[feature[:, 22] == 2], np.r_[22], axis=1)
     f3 = np.delete(feature[feature[:, 22] == 3], np.r_[22], axis=1)
-    f23 = np.concatenate((f2, f3))
-    f_arr.extend([f0, f1, f23])
+    f_arr.extend([f0, f1, f2, f3])
 
     l0, l1 = label[feature[:, 22] == 0], label[feature[:, 22] == 1]
-    l23 = np.concatenate((label[feature[:, 22] == 2], label[feature[:, 22] == 3]))
-    l_arr.extend([l0, l1, l23])
+    l2, l3 = label[feature[:, 22] == 2], label[feature[:, 22] == 3]
+    l_arr.extend([l0, l1, l2, l3])
 
     _ids = np.concatenate((id[feature[:, 22] == 0], id[feature[:, 22] == 1],
-                           id[feature[:, 22] == 2], id[feature[:, 22] == 3]))
+                               id[feature[:, 22] == 2], id[feature[:, 22] == 3]))
+    if len(best_k) == 0:
+        return f_arr, l_arr, _ids
 
-    return f_arr, l_arr, _ids
+    else:
+        for i, k in zip(f_arr, best_k):
+            k_means_replacing(f_arr[i], best_k[k])
+            f_arr[i] = standardize(f_arr[i])
+        return f_arr, l_arr, _ids
 
 
-def data_preprocess(tx, y, id, replacing='lr', mode='std_norm'):
+def data_preprocess(tx, y, id, k_list=[], replacing='lr', mode='std'):
     tx_split, y_split, id_split = split_reformat_data(tx, y, id)
 
-    for i in range(len(tx_split)):
-        # Replace missing values
-        if replacing == 'k_means':
-            k_means_replacing(tx_split[i], k=11)
-
-        elif replacing in ('mean', 'median', 'lr'):
+    if replacing in ('mean', 'median', 'lr', 'zero'):
+        for i in range(len(tx_split)):
             replace_missing_value(tx_split[i], 0, func=replacing)
 
-        # Standardization and/or normalization
-        tx_split[i] = std_norm_preprocess(tx_split[i], mode)
+            # Standardization or normalization
+            tx_split[i] = std_norm_preprocess(tx_split[i], mode)
 
-    return tx_split, y_split, id_split
+        return tx_split, y_split, id_split
+
+    if replacing == 'k_means':
+        if len(k_list) == 0:
+            return tx_split, y_split, id_split
+
+        else:
+            for i, k in zip(tx, k_list):
+                k_means_replacing(i, k)
+
+                # Standardization or normalization
+                tx_split[i] = std_norm_preprocess(tx_split[i], mode)
+
+            return tx_split, y_split, id_split
 
 
-def replace_missing_value(data, col, func='lr'):
+def replace_missing_value(data, col=0, func='lr'):
     if func == 'median':
         rep = np.median(data[data[:, col] != -999][:, col])
+        data[:, col] = np.where(data[:, col] == -999, rep, data[:, col])
+
+    elif func == 'zero':
+        rep = 0
         data[:, col] = np.where(data[:, col] == -999, rep, data[:, col])
 
     elif func == 'mean':
@@ -93,16 +107,14 @@ def replace_missing_value(data, col, func='lr'):
             weight = (normal_x.T * normal_x).I * (normal_x.T * normal_y)
             predict_y = abnormal_x * weight
             data[np.where(data[:, 0] == -999)[0]] = np.c_[predict_y, abnormal_x]
+
         else:
             print("Singular Matrix!")
-
-    elif func == 'k_means':
-        k_means_replacing(data, k=11)
 
 
 def k_means_cluster(data, y, k, max_iter=20):
     data = np.asarray(data, np.float32)
-    indices = np.random.randint(0, data.shape[0], (1,k)).tolist()
+    indices = np.random.randint(0, data.shape[0], (1, k)).tolist()
     #print(indices)
 
     center = np.copy(data[indices])
