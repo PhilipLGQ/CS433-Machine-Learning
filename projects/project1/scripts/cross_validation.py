@@ -40,3 +40,11 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     loss_te = np.sqrt(2 * compute_loss_mse(y_te, poly_tx_te, w))
 
     return loss_tr, loss_te, w
+
+
+def build_poly(x, degree):
+    poly = np.ones((len(x), 1))
+    for degrees in range(1, degree):
+        poly = np.c_[poly, np.power(x, degrees)]
+
+    return poly

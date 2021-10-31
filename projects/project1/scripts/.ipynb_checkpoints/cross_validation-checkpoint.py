@@ -13,7 +13,7 @@ def build_k_indices(y, k_fold, seed):
     random_indices = np.random.permutation(num_rows)
     k_indices = [random_indices[k * interval: (k + 1) * interval] for k in range(k_fold)]
 
-    return k_indices
+    return np.array(k_indices)
 
 
 def cross_validation(y, x, k_indices, k, lambda_, degree):
@@ -33,10 +33,18 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     poly_tx_te = build_poly(x_te, degree)
 
     # Do ridge regression
-    w = ridge_regression(y_tr, poly_tx_tr, lambda_)
+    w, _ = ridge_regression(y_tr, poly_tx_tr, lambda_)
 
     # Calculate loss of cost function root mse (RMSE)
-    loss_tr = np.sqrt(2 * compute_mse(y_tr, poly_tx_tr, w))
-    loss_te = np.sqrt(2 * compute_mse(y_te, poly_tx_te, w))
+    loss_tr = np.sqrt(2 * compute_loss_mse(y_tr, poly_tx_tr, w))
+    loss_te = np.sqrt(2 * compute_loss_mse(y_te, poly_tx_te, w))
 
     return loss_tr, loss_te, w
+
+
+def build_poly(x, degree):
+    poly = np.ones((len(x), 1))
+    for degrees in range(1, degree):
+        poly = np.c_[poly, np.power(x, degrees)]
+
+    return poly

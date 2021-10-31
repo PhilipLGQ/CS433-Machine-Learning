@@ -34,10 +34,21 @@ mode: ways to normalize the data, options: 'std' (standardization by mean and sd
 
 TX, Y, r_ids = data_preprocess(tX, y, ids, replacing='k_means', mode='std_norm')
 
-print(len(TX))
-
 
 '''
-*** Set optimal hyper-parameters derived from cross-validation
+*** Set hyper-parameters
 '''
+
+K_FOLD = 10
+DEGREE1 = np.arange(2, 4)
+DEGREE2 = np.arange(3, 7)
+k_clusters = np.arange(1, 10)
+SEED = 5
+LAMBDA = np.logspace(-6, -2, 40)
+
+'''
+'''
+
+
+
 

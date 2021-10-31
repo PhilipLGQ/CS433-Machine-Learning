@@ -80,6 +80,9 @@ def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
     best_degree = []
 
     for k_mean in k_clusters:
+        
+        filehandler = open(f'result_{k_mean}.txt', 'a')
+        
         x_k = tx.copy()
         k_cluster = 10 * k_mean + 5
 
@@ -96,12 +99,12 @@ def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
                     _, loss_val, w = cross_validation(y, x_k, k_indices, k, _lambda, degree)
                     rmse_val_lambda.append(loss_val)
 
-                print("No. of clusters {}".format(k_cluster))
-                print("lambda {}".format(_lambda))
+                filehandler.write("No. of clusters {}\n".format(k_cluster))
+                filehandler.write("lambda {}\n".format(_lambda))
 
-                print("loss {}".format(np.mean(rmse_val_lambda)))
-                print("degree {}".format(degree))
-                print("\n\n")
+                filehandler.write("loss {}\n".format(np.mean(rmse_val_lambda)))
+                filehandler.write("degree {}\n".format(degree))
+                filehandler.write("\n\n")
 
                 rmse_val.append(np.mean(rmse_val_lambda))
 
@@ -114,6 +117,9 @@ def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
     opt_degree = best_degree[np.argmin(best_rmse)]
     opt_lambda = best_lambda[np.argmin(best_rmse)]
     opt_k = best_k[np.argmin(best_rmse)]
+    
+
+    filehandler.close()
 
     return opt_degree, opt_lambda, opt_k
 
