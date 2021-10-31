@@ -10,7 +10,7 @@ import seaborn as sns
 
 
 # Load training dataset, divide into feature matrix, class labels, and event ids
-DATA_TRAIN_PATH = '.data/train.csv'
+DATA_TRAIN_PATH = '../data/train.csv'
 y, tX, ids = load_csv_data(DATA_TRAIN_PATH)
 
 
@@ -32,9 +32,12 @@ mode: ways to normalize the data, options: 'std' (standardization by mean and sd
       'norm' (normalize data to 0 ~ 1), 'std_norm' (standardization followed by norm);         
 '''
 
-TX, Y, r_ids = data_preprocess(tX, y, ids, replacing='lr', mode='std_norm')
+TX, Y, r_ids = data_preprocess(tX, y, ids, replacing='k_means', mode='std_norm')
+
+print(len(TX))
 
 
 '''
-
+*** Set optimal hyper-parameters derived from cross-validation
 '''
+
