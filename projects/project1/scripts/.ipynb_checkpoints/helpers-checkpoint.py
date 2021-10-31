@@ -84,7 +84,7 @@ def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
         filehandler = open(f'result_{k_mean}.txt', 'a')
         
         x_k = tx.copy()
-        k_cluster = 10 * k_mean + 5
+        k_cluster = 5 * k_mean + 5
 
         k_means_replacing(x_k, k_cluster)
         x_k = standardize(x_k)
