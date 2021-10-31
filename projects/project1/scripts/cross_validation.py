@@ -29,8 +29,8 @@ def cross_validation(y, x, k_indices, k, lambda_, degree):
     y_te = y[indice_te]
 
     # Form data with polynomial degree
-    poly_tx_tr = build_poly(x_tr, degree)
-    poly_tx_te = build_poly(x_te, degree)
+    poly_tx_tr = build_poly(x_tr, degree+1)
+    poly_tx_te = build_poly(x_te, degree+1)
 
     # Do ridge regression
     w, _ = ridge_regression(y_tr, poly_tx_tr, lambda_)

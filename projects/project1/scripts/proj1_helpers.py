@@ -26,6 +26,20 @@ def load_csv_data(data_path, sub_sample=False):
     return yb, input_data, ids
 
 
+def generate_weights(tx, y, best_d, best_l, best_k, ids):
+    weights = []
+    feature_arr, label_arr, = tx, y
+    for idx, (f, l) in enumerate(zip(feature_arr, label_arr)):
+        # Polynomial Feature Transform
+        poly_feature = build_poly(f, best_d[idx])
+
+        # Training ridge regression on the entire training
+        w, _= ridge_regression(l, poly_feature, best_l[idx])
+        weights.append(w)
+
+    return weights
+
+
 def predict_labels(weights, data):
     """Generates class predictions given weights, and a test data matrix"""
     y_pred = np.dot(data, weights)
@@ -34,23 +48,32 @@ def predict_labels(weights, data):
     
     return y_pred
 
+def reformat_result(pred, re_ids):
+    pred_pair = [(i, j) for i, j in zip(re_ids, pred)]
+    result = [j for _, j in sorted(pred_pair)]
+    
+    return result
 
-def data_pred(tx, w, ids):
+
+def data_pred(tx, w, ids, poly=False, best_d=[]):
     pred = []
+    for idx, (f, weight) in enumerate(zip(tx, w)):
+        if poly:
+            tX = build_poly(f, best_d[idx])
+        else:
+            tX = np.c_[np.ones((len(f), 1)), f]
+        pred.extend(predict_labels(weight, tX))
 
-    for idx, weight in enumerate(w):
-        poly_tx = build_poly(tx[idx], len(weight)-1)
-        pred.extend(predict_labels(weight, poly_tx))
-
-    pred_pair = [(i, j) for i, j in zip(ids, pred)]
-    pred_reordered = [label for _, label in sorted(pred_pair)]
-
-    return pred_reordered
+    return reformat_result(pred, ids)
 
 
 def metric_pred(pred, y):
-    accuracy = sum(pred == y) / len(y)
-
+    count = 0
+    for i in range(len(pred)):
+        if pred[i] == y[i]:
+            #print('!')
+            count = count + 1
+    accuracy = count / len(y)
     return accuracy
 
 
