@@ -23,7 +23,6 @@ Before running the scripts and notebook files, you should keep the folder struct
   ├── data
   │   ├── test.csv               # training set, extract first
   │   └── train.csv              # test set, extract first
-  ├── dataplot.py
   ├── helpers.py
   ├── implementations.py
   ├── preprocess.py
