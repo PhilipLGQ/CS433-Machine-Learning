@@ -24,10 +24,27 @@ y, tX, ids = load_csv_data(DATA_TRAIN_PATH)
 *** Set hyper-parameters
 '''
 
+
+
+'''
+#The following parameters allow you to generate the prediction results much faster
+#If you want to run the complete process, which takes 3 hours or longer, to generate prediction result s
+#please use the following parameters:
 K_FOLD = 10
-DEGREE = np.arange(3, 7)
+DEGREE = np.arange(2, 7)
+DEGREE_jet_0 = np.arange(2, 7)
+K_CLUSTERS1 = np.arange(1, 9)
+K_CLUSTERS0 = np.arange(1, 9)
+SEED = 5
+LAMBDA = np.logspace(-6, -2, 40)
+METHOD = 'k_means'
+MODE = 'std'
+'''
+K_FOLD = 10
+DEGREE = np.arange(5, 7)
 DEGREE_jet_0 = np.arange(2, 4)
-K_CLUSTERS = np.arange(1, 10)
+K_CLUSTERS1 = np.arange(1, 4)
+K_CLUSTERS0 = np.arange(7, 9)
 SEED = 5
 LAMBDA = np.logspace(-6, -2, 40)
 METHOD = 'k_means'
@@ -63,9 +80,9 @@ for idx in range (len(features)):
     
     # To save time, we are using a different range of degree for data with jet = 0
     if idx == 0:
-        opt_d, opt_l, opt_k = find_optimal_KMC(labels[idx], features[idx], DEGREE_jet_0, K_FOLD, LAMBDA, K_CLUSTERS)
+        opt_d, opt_l, opt_k = find_optimal_KMC(labels[idx], features[idx], DEGREE_jet_0, K_FOLD, LAMBDA, K_CLUSTERS0)
     else:   
-        opt_d, opt_l, opt_k = find_optimal_KMC(labels[idx], features[idx], DEGREE, K_FOLD, LAMBDA, K_CLUSTERS)
+        opt_d, opt_l, opt_k = find_optimal_KMC(labels[idx], features[idx], DEGREE, K_FOLD, LAMBDA, K_CLUSTERS1)
     
     ls_opt_degree.append(opt_d)
     ls_opt_lambda.append(opt_l)    
@@ -74,7 +91,7 @@ for idx in range (len(features)):
     
 
 TX, Y, r_ids = data_preprocess(tX, y, ids, k_list = ls_opt_k, replacing=METHOD, mode=MODE)
-
+weights = generate_weights(TX, Y, ls_opt_degree, ls_opt_lambda, ls_opt_k, r_ids)
 
 y_pred = data_pred(TX, weights, r_ids, True, ls_opt_degree)
 

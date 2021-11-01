@@ -97,8 +97,8 @@ def metric_pred(pred, y):
                    y (list with original labels)
     """
     count = 0
-    for i in range(pred):
-        if count[i] == y[i]:
+    for i in range(len(pred)):
+        if pred[i] == y[i]:
             count += 1
 
     accuracy = round((count / len(y)), 4)
