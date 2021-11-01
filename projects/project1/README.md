@@ -43,12 +43,12 @@ Script that contains the best algorithm implemented, with the generation of corr
 * Load the training dataset into feature matrix(X), class labels(Y, -1 or 1), and event ids
 * Data preprocessing
      
-        - Split the data into 3 sub-datasets based on 'PRI_jet_num' (0, 1, 2 & 3 for each sub-dataset)
-        - impute the missing values with k-means clustering / linear regression / median / mean / '0' 
-        - Standardize and/or normalize the sub-datasets
+        - Split the data into 4 sub-datasets based on 'PRI_jet_num' (0, 1, 2, 3 for each sub-dataset)
+        - impute the missing values with k-means clustering 
+        - Standardize the sub-datasets by column means and standard deviations
 
-* Train a ridge regression model with 10-fold cross validation, with an automatic process of finding the best degree and lambda
-* Train a ridge regression model on the complete training set, using the best degreee and lambda
+* Train a ridge regression model with 10-fold cross validation, with an automatic process of finding the best number of clusters, degree, and lambda
+* Train a ridge regression model on the complete training set, using the best number of clusters, degree, and lambda
 * Load the test dasaset into feature matrix(X) and event ids(ID for reordering prediction)
 * Compute and generate a prediction csv file `./scripts/data/pred.csv`
 
@@ -93,8 +93,8 @@ Notebook file contains code demonstrating our training and validation process of
 We reserved the block outputs to show the hyperparameter setting with metrics for your reference.
 
 
-## Performance & Hyper-parameter Setting
-TBD
+## Best Performance
+Our best model: Ridge Regression with imputation through k-means clustering, test accuracy: 0.803, F1 score: 0.689
 
 
 ## Authors
