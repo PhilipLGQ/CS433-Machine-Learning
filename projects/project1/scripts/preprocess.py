@@ -3,6 +3,10 @@ from numpy.linalg import norm
 
 
 def standardize(tx):
+    """
+        Perform standardization by mean and standard deviation, return standardized feature matrix
+        Argument: tx (feature matrix)
+    """
     tx_T = np.transpose(tx)
     tx_T_std = np.zeros((tx.shape[1], tx.shape[0]))
 
@@ -13,6 +17,10 @@ def standardize(tx):
 
 
 def normalize(tx):
+    """
+        Perform normalization (0, 1), return normalized feature matrix
+        Argument: tx (feature matrix)
+    """
     tx_T = np.transpose(tx)
     tx_T_norm = np.zeros((tx.shape[1], tx.shape[0]))
 
@@ -24,6 +32,12 @@ def normalize(tx):
 
 
 def std_norm_preprocess(tx, func='std'):
+    """
+        Helper function for choosing standardization / normalization,
+        return standardized / normalized training data.
+        Arguments: tx (data not preprocessed)
+                   func ('std': standardization, better method; 'norm': normalization)
+    """
     if func == 'std':
         tx_std = standardize(tx)
         return tx_std
@@ -34,7 +48,13 @@ def std_norm_preprocess(tx, func='std'):
 
 
 def split_reformat_data(feature, label, id, k_arr=[]):
-
+    """
+        Helper function to split the training / test set into 4 subsets, based on PRI_jet_num
+        Arguments: feature (original feature matrix)
+                   label (original label vector)
+                   id (original id)
+                   best_k (default empty list, used for preprocessing test set in k-means method)
+    """
     f_arr = []
     l_arr = []
 
@@ -61,6 +81,15 @@ def split_reformat_data(feature, label, id, k_arr=[]):
 
 
 def data_preprocess(tx, y, id, k_list=[], replacing='lr', mode='std'):
+    """
+        Helper function dealing with different means of preprocessing.
+        Arguments: tx (original feature matrix)
+                   y (original label vector)
+                   id (original id vector)
+                   k_list (default empty list, provide list of optimal k's for each
+                   replacing (Methods for imputing missing values, 'mean', 'median', 'zero', 'lr', 'k_means')
+                   mode ('std': standardization, 'norm': normalization)
+    """
     tx_split, y_split, id_split = split_reformat_data(tx, y, id)
 
     if replacing in ('mean', 'median', 'lr', 'zero'):
@@ -89,6 +118,12 @@ def data_preprocess(tx, y, id, k_list=[], replacing='lr', mode='std'):
 
 
 def replace_missing_value(data, col=0, func='lr'):
+    """
+        Realize median, mean, zero, linear regression imputing.
+        Arguments: data (splitted feature matrix)
+                   col (column to be replace, set to 0 for the first feature column)
+                   func ('median', 'mean', 'lr', 'zero', replacing methods)
+    """
     if func == 'median':
         rep = np.median(data[data[:, col] != -999][:, col])
         data[:, col] = np.where(data[:, col] == -999, rep, data[:, col])
@@ -203,7 +238,13 @@ def replace_missing_value(data, col=0, func='lr'):
 
 
 def k_means_cluster(data, y, k, max_iter=20, seed=5):
-    
+    """
+        K-means clustering, return clusters, centroids, and center values
+        Arguments: data (feature matrix of samples with values != 999)
+                   y (label of samples with values != 999)
+                   k (number of clusters)
+                   max_iter (maximum iterations, default 20)
+    """
     np.random.seed(seed)
     
     data = np.asarray(data, np.float32)
@@ -235,6 +276,11 @@ def k_means_cluster(data, y, k, max_iter=20, seed=5):
 
 
 def k_means_replacing(data, k=11):
+    """
+        Impute the missing value with calculated k-mean values, return imputed feature matrix
+        Arguments: data (splitted feature matrix subset)
+                   k (index for number of clusters)
+    """
     normal_x = np.mat(np.delete(data[data[:, 0] != -999], np.r_[0], axis=1))
     abnormal_x = np.mat(np.delete(data[data[:, 0] == -999], np.r_[0], axis=1))
     normal_y = np.mat(data[data[:, 0] != -999][:, 0])

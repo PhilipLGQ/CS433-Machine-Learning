@@ -6,12 +6,15 @@
 # least_squares_GD, least_squares_SGD, least_squares, ridge_regression,
 # logistic_regression, and reg_logistic_regression
 
+# Return type: (w, loss) of the last iteration step
+
 
 from costs import *
 import numpy as np
 
 
 def least_squares_GD(y, tx, initial_w, max_iters, gamma):
+
     losses = []
     tx = np.c_[np.ones((tx.shape[0], 1)), tx]
 

@@ -9,12 +9,24 @@ def compute_mse(e):
 
 
 def compute_loss_mse(y, tx, w):
+    """
+        Compute MSE loss using the error term, return the mse loss.
+        Arguments: y (labels of the training data)
+                   tx (feature matrix of the training data)
+                   w (weight)
+    """
     e = y - tx.dot(w)
     loss = compute_mse(e)
     return loss
 
 
 def calculate_loss_logistic(y, tx, w):
+    """
+        Compute loss of logistic regression, return the loss.
+        Arguments: y (labels of the training data)
+                   tx (feature matrix of the training data)
+                   w (weight)
+    """
     sigmoid_pred = sigmoid(tx.dot(w))
     loss = -(y.T.dot(np.log(sigmoid_pred))
              + (1 - y).T.dot(np.log(1 - sigmoid_pred)))

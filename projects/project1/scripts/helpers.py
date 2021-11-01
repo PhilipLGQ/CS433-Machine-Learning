@@ -7,6 +7,13 @@ import numpy as np
 
 
 def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
+    """
+        Batch iteration function used for Stochastic Gradient Descent.
+        Arguments: y (labels)
+                   tx (feature matrix)
+                   batch_size (scale of a batch)
+                   shuffle (Shuffle the feature matrix and labels if True)
+    """
     data_size = len(y)
 
     if shuffle:
@@ -26,6 +33,12 @@ def batch_iter(y, tx, batch_size, num_batches=1, shuffle=True):
 
 
 def build_poly(x, degree):
+    """
+        Polynomial expansion of preprocessed feature matrix, up to (degree - 1).
+        Arguments: x (preprocessed feature matrix)
+                   degree (the upper limit of polynomial expansion, upper limit not included)
+
+    """
     poly = np.ones((len(x), 1))
     for degrees in range(1, degree):
         poly = np.c_[poly, np.power(x, degrees)]
@@ -34,23 +47,50 @@ def build_poly(x, degree):
 
 
 def compute_gradient(y, tx, w):
+    """
+        Compute the gradient of loss function.
+        Arguments: y (labels)
+                   tx (feature matrix)
+                   w (weight)
+    """
     e = y - tx.dot(w)
     grad = -tx.T.dot(e) / len(y)
     return grad, e
 
 
 def sigmoid(t):
-    sigmoid = 1.0 / (1.0 + np.exp(-t))
-    return sigmoid
+    """
+        Sigmoid function used in logistic regression, np.exp overflow prevented, returns sigmoid output
+        Arguments: t (list of variables in sigmoid function)
+    """
+    output = []
+    for i in range(len(t)):
+        if t[i] >= 0:
+            output.append(1.0 / (1.0 + np.exp(-t)))
+        else:
+            output.append(np.exp(t[i]) / (1 + np.exp(t[i])))
+    output = np.asarray(output).reshape((-1, 1))
+    return output
 
 
 def calculate_gradient_logistic(y, tx, w):
+    """
+        Calculate gradient of loss function in logistic regression
+        Arguments: y (labels relabeled as 0 and 1)
+                   tx (feature matrix)
+                   w (weights)
+    """
     sigmoid_pred = sigmoid(tx.dot(w))
     grad = tx.T.dot(sigmoid_pred - y)
     return grad
 
 
 def calculate_hessian(y, tx, w):
+    """
+        Calculate hessian in logistic regression
+        Arguments: tx (feature matrix)
+                   w (weights)
+    """
     sigmoid_pred = sigmoid(tx.dot(w))
 
     # Generate a diagonal matrix for values of sigmoid_pred
@@ -66,15 +106,15 @@ def calculate_hessian(y, tx, w):
     return hessian
 
 
-def learning_by_GD_logistic(y, tx, w, gamma):
-    loss = calculate_loss_logistic(y, tx, w)
-    grad = calculate_gradient_logistic(y, tx, w)
-    w = w - gamma * grad
-
-    return w, loss
-
-
 def learning_by_SGD_logistic(y, tx, w, gamma, batch_size=1):
+    """
+        Logistic regression by stochastic gradient descent, return weight and loss
+        Arguments: y (labels relabeled as 0 and 1)
+                   tx (feature matrix)
+                   w (weights)
+                   gamma (Gamma parameter)
+                   batch_size (number of samples in batch)
+    """
     for tx_batch, y_batch in batch_iter(y, tx, batch_size, num_batches=1):
         loss = calculate_loss_logistic(y_batch, tx_batch, w)
         grad = calculate_gradient_logistic(y_batch, tx_batch, w)
@@ -84,6 +124,13 @@ def learning_by_SGD_logistic(y, tx, w, gamma, batch_size=1):
 
 
 def penalized_logistic_regression(y, tx, w, lambda_):
+    """
+        Calculate loss, gradient, hessian for regularized logistic regression
+        Arguments: y (labels relabeled as 0 and 1)
+                   tx (feature matrix)
+                   w (weights)
+                   lambda_ (Lambda parameter)
+    """
     # return loss, gradient, and hessian
     loss = np.squeeze(calculate_loss_logistic(y, tx, w) + lambda_ * (w.T.dot(w)))
     grad = calculate_gradient_logistic(y, tx, w) + 2 * lambda_ * w
@@ -93,6 +140,15 @@ def penalized_logistic_regression(y, tx, w, lambda_):
 
 
 def learning_by_penalized_logistic(y, tx, w, gamma, lambda_, batch_size=1):
+    """
+        Regularized logistic regression by stochastic gradient descent, return weight and loss
+        Arguments: y (labels relabeled as 0 and 1)
+                   tx (feature matrix)
+                   w (weights)
+                   gamma (Gamma parameter)
+                   lambda_ (Lambda parameter)
+                   batch_size (number of samples in batch)
+    """
     for tx_batch, y_batch in batch_iter(y, tx, batch_size, num_batches=1):
         loss, grad, _ = penalized_logistic_regression(y_batch, tx_batch, w, lambda_)
         w = w - gamma * grad

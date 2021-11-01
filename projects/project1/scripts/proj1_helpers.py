@@ -29,6 +29,13 @@ def load_csv_data(data_path, sub_sample=False):
 
 
 def generate_weights(tx, y, best_d, best_l, best_k, ids):
+    """
+        Generate weights for ridge regression, return weights
+        Arguments: tx (preprocessed feature matrix)
+                   y (labels)
+                   best_d, best_l, best_k (optimal degree, lambda, and k-value learned)
+                   ids (original id list)
+    """
     weights = []
     feature_arr, label_arr, = tx, y
     for idx, (f, l) in enumerate(zip(feature_arr, label_arr)):
@@ -52,6 +59,11 @@ def predict_labels(weights, data):
 
 
 def reformat_result(pred, re_ids):
+    """
+        Reorder the prediction result according to the original id order.
+        Arguments: pred (prediction list for
+                   re_ids (original id list)
+    """
     pred_pair = [(i, j) for i, j in zip(re_ids, pred)]
     result = [j for _, j in sorted(pred_pair)]
     
@@ -59,6 +71,14 @@ def reformat_result(pred, re_ids):
 
 
 def data_pred(tx, w, re_ids, poly=False, best_d=[]):
+    """
+        Generate the list of predicted labels, return to test_data_reordered function for output.
+        Arguments: tx (preprocessed feature matrix)
+                   w (trained weights)
+                   re_ids (separated id list from preprocessing function)
+                   poly (Polynomial expansion to best degree if True)
+                   best_d = (default empty, should be provided when poly = True)
+    """
     pred = []
     for idx, (f, weight) in enumerate(zip(tx, w)):
         if poly:
@@ -71,12 +91,30 @@ def data_pred(tx, w, re_ids, poly=False, best_d=[]):
 
 
 def metric_pred(pred, y):
-    accuracy = sum(pred == y) / len(y)
+    """
+        Returns an accuracy used for evaluating the performance on training set, round to 4 decimal places
+        Arguments: pred (list with predicted labels)
+                   y (list with original labels)
+    """
+    count = 0
+    for i in range(pred):
+        if count[i] == y[i]:
+            count += 1
+
+    accuracy = round((count / len(y)), 4)
 
     return accuracy
 
 
 def find_optimal(y, tx, degrees, k_fold, lambdas, seed=1):
+    """
+        Calculate to find the optimal degree and optimal lambda, when method is not k-means.
+        Arguments: y (labels)
+                   tx (preprocessed feature matrix)
+                   degrees (pre-set degree range to find the best)
+                   lambdas (pre-set lambda range to find the best)
+                   seed (default random seed)
+    """
     # Split the data into k-fold
     k_indices = build_k_indices(y, k_fold, seed)
     
@@ -106,6 +144,16 @@ def find_optimal(y, tx, degrees, k_fold, lambdas, seed=1):
     return opt_degree, opt_lambda
 
 def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
+    """
+        Select the best number of clusters, best degrees and best lambdas for k-means imputed logistic regression.
+        Arguments: y (labels)
+                   tx (splitted feature matrix)
+                   degrees (pre-set degree range to select the best)
+                   k_fold (number of folds)
+                   lambdas (pre-set degree range to select the best)
+                   k_clusters (pre-set cluster index to select the best, k = [10 * k_clusters + 5])
+                   seed (default random seed)
+    """
     # Split the data into k-fold
     k_indices = build_k_indices(y, k_fold, seed)
     x_k = tx.copy()
@@ -159,8 +207,6 @@ def find_optimal_KMC(y, tx, degrees, k_fold, lambdas, k_clusters, seed=1):
     filehandler.close()
 
     return opt_degree, opt_lambda, opt_k
-
-
 
 
 def create_csv_submission(ids, y_pred, name):
