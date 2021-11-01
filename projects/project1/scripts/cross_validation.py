@@ -6,6 +6,7 @@ from implementations import *
 import numpy as np
 
 
+
 def build_k_indices(y, k_fold, seed):
     num_rows = len(y)
     interval = int(num_rows / k_fold)

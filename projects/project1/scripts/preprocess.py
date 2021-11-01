@@ -77,11 +77,13 @@ def data_preprocess(tx, y, id, k_list=[], replacing='lr', mode='std'):
             return tx_split, y_split, id_split
 
         else:
-            for idx, (fea, n_clu) in enumerate(zip(tx, k_list)):
+            for idx, (fea, n_clu) in enumerate(zip(tx_split, k_list)):
+                                
+                # Perform substitutions in place
                 k_means_replacing(fea, n_clu)
 
                 # Standardization or normalization
-                tx_split[idx] = std_norm_preprocess(tx_split[idx], mode)
+                tx_split[idx] = std_norm_preprocess(fea, mode)
 
             return tx_split, y_split, id_split
 
@@ -113,85 +115,146 @@ def replace_missing_value(data, col=0, func='lr'):
             print("Singular Matrix!")
 
 
-def initialise_centroids(data, n_clusters, seed=5):
+# def initialise_centroids(data, n_clusters, seed=5):
     
-    # As we meant to have reproduce identical result
-    # We specify a fixed seed for random
+#     # As we meant to have reproduce identical result
+#     # We specify a fixed seed for random
+#     np.random.seed(seed)
+#     indices = np.random.choice(data.shape[0], size=n_clusters)
+#     centroids = np.copy(data[indices])
+    
+#     # TO BE DELETED  
+#     print(centroids)
+    
+#     return centroids[:, 1:]
+
+
+# def compute_distance(data, n_clusters, centroids):
+#         distance = np.zeros((data.shape[0], n_clusters))
+#         for k in range(n_clusters):
+            
+#             # Here, we select columns inside the function
+#             # Thus not necessary to adjust the pass-in data
+#             row_norm = norm(data[:, 1:] - centroids[k, :], axis=1)
+#             distance[:, k] = np.square(row_norm)
+#         return distance
+    
+    
+# def find_closest_cluster(distance):
+#         return np.argmin(distance, axis=1)
+    
+    
+# def compute_centroids(data, old_closest_clusters, n_clusters):
+    
+#     # Create an empty numpy array to store computed centroids
+#     centroids = np.zeros((n_clusters, data.shape[1] - 1))
+    
+#     for k in range(n_clusters):
+#         centroids[k, :] = np.mean(data[old_closest_clusters == k, 1:], axis=0)
+#     return centroids
+    
+    
+# def k_means_clustering(data, col, n_clusters, max_iter):
+    
+#     centroids = initialise_centroids(data, n_clusters)
+    
+#     for i in range(max_iter):
+#         distance = compute_distance(data, n_clusters, centroids)
+#         clusters = find_closest_cluster(distance)
+
+#         # The concat of first column value and its corresponding cluster
+#         stats = np.c_[data[:,col], clusters]
+
+#         # Store centriods for reference
+#         old_centroids = centroids
+        
+#         # Update centroids
+#         centroids = compute_centroids(data, stats[:,1], n_clusters)
+
+#         # Break if no further updates
+#         if np.all(old_centroids == centroids):
+#             break
+            
+#     return stats
+
+
+# def k_means_replacing(data, n_clusters, max_iter=80, mode='mean', col=0, seed=5):
+    
+#     # Make a copy of data to perform substitution
+#     data_copy = np.copy(data)
+    
+#     stats = k_means_clustering(data, col, n_clusters, max_iter)
+    
+#     # Subset data with not nan value
+#     # As we already know the shape of stats, we will use hard-coded index
+#     not_nan = stats[stats[:,0] != -999]
+    
+#     # Calculate means over each cluster with valid data
+#     if mode=="mean":
+    
+#         for clu in np.unique(stats[:,1]):
+#             rep_cluster = np.round(not_nan[:,0].mean(where=not_nan[:,1]==clu), 3)
+#             stats[ np.where((stats[:,0] == -999) & (stats[:,1] == clu)), 0] = rep_cluster
+        
+#     # Replace value accordingly in the original data
+#     data_copy[:,col] = stats[:,0]
+    
+#     return data_copy
+
+
+def k_means_cluster(data, y, k, max_iter=20, seed=5):
+    
     np.random.seed(seed)
-    indices = np.random.choice(data.shape[0], size=n_clusters)
-    centroids = np.copy(data[indices])
     
-    return centroids[:, 1:]
+    data = np.asarray(data, np.float32)
+    indices = np.random.randint(0, data.shape[0], (1, k)).tolist()
+    #print(indices)
+
+    center = np.copy(data[indices])
+    cluster = np.zeros(data.shape[0])
+
+    for i in range(0,max_iter):
+        one_hot1 = np.zeros(k*data.shape[0], np.float32)
+
+        distance = np.sqrt(np.sum(np.square(np.expand_dims(data, axis=1) - center), axis=2))
+        cluster = np.argmin(distance, axis=1)
+
+        one_hot1[np.argmin(distance, axis=1) + np.arange(data.shape[0]) * k] = 1.
+        one_hot2 = np.reshape(one_hot1, (data.shape[0], k))
+        center = np.matmul(np.transpose(one_hot2, (1, 0)), data) / np.expand_dims(np.sum(one_hot2, axis=0), axis=1)
+
+    class_y = np.zeros((2, np.asarray(np.argmin(distance, axis=1)).shape[0]))
+    class_y[0] = np.asarray(cluster)
+    class_y[1] = np.asarray(y[0].T)[:, 0]
+    y_center = []
+
+    for i in range(k):
+        y_center.append(np.mean(class_y[1][class_y[0, :] == i]))
+
+    return cluster, center, np.array(y_center)
 
 
-def compute_distance(data, n_clusters, centroids):
-        distance = np.zeros((data.shape[0], n_clusters))
-        for k in range(n_clusters):
-            
-            # Here, we select columns inside the function
-            # Thus not necessary to adjust the pass-in data
-            row_norm = norm(data[:, 1:] - centroids[k, :], axis=1)
-            distance[:, k] = np.square(row_norm)
-        return distance
-    
-    
-def find_closest_cluster(distance):
-        return np.argmin(distance, axis=1)
-    
-    
-def compute_centroids(data, old_closest_clusters, n_clusters):
-    
-    # Create an empty numpy array to store computed centroids
-    centroids = np.zeros((n_clusters, data.shape[1] - 1))
-    
-    for k in range(n_clusters):
-        centroids[k, :] = np.mean(data[old_closest_clusters == k, 1:], axis=0)
-    return centroids
-    
-    
-def k_means_clustering(data, col, n_clusters, max_iter):
-    
-    centroids = initialise_centroids(data, n_clusters)
-    
-    for i in range(max_iter):
-        distance = compute_distance(data, n_clusters, centroids)
-        clusters = find_closest_cluster(distance)
+def k_means_replacing(data, k=11):
+    normal_x = np.mat(np.delete(data[data[:, 0] != -999], np.r_[0], axis=1))
+    abnormal_x = np.mat(np.delete(data[data[:, 0] == -999], np.r_[0], axis=1))
+    normal_y = np.mat(data[data[:, 0] != -999][:, 0])
 
-        # The concat of first column value and its corresponding cluster
-        stats = np.c_[data[:,col], clusters]
+    cluster, center, y_center = k_means_cluster(normal_x, normal_y, k)
+    replace_list = np.zeros((abnormal_x.shape[0],1))
 
-        # Store centriods for reference
-        old_centroids = centroids
-        
-        # Update centroids
-        centroids = compute_centroids(data, stats[:,1], n_clusters)
+    for j in range(abnormal_x.shape[0]):
+        if j % 100 == 0:
+            print('Replacing ' + str(j) + 'out of' + str(abnormal_x.shape[0]))
 
-        # Break if no further updates
-        if np.all(old_centroids == centroids):
-            break
-            
-    return stats
+        tt = np.zeros((center.shape[0], center.shape[1]))
 
+        for i in range(center.shape[0]):
+            tt[i] = abnormal_x[j]
 
-def k_means_replacing(data, n_clusters, max_iter=200, mode='mean', col=0, seed=5):
-    
-    # Make a copy of data to perform substitution
-    data_copy = np.copy(data)
-    
-    stats = k_means_clustering(data, col, n_clusters, max_iter)
-    
-    # Subset data with not nan value
-    # As we already know the shape of stats, we will use hard-coded index
-    not_nan = stats[stats[:,0] != -999]
-    
-    # Calculate means over each cluster with valid data
-    if mode=="mean":
-    
-        for clu in np.unique(stats[:,1]):
-            rep_cluster = np.round(not_nan[:,0].mean(where=not_nan[:,1]==clu), 3)
-            stats[ np.where((stats[:,0] == -999) & (stats[:,1] == clu)), 0] = rep_cluster
-        
-    # Replace value accordingly in the original data
-    data_copy[:,col] = stats[:,0]
-    
-    return data_copy
+        ff = np.mat(tt-center)
+        distance_matrix = np.array((ff * ff.T).diagonal()).T
+        class_num = np.argmin(distance_matrix)
+        replace_list[j] = y_center[class_num]
+
+    replace_list = np.c_[replace_list, abnormal_x]
+    data[np.where(data[:, 0] == -999)[0]] = replace_list
