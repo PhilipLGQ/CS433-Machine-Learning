@@ -43,7 +43,7 @@ Script that contains the best algorithm implemented, with the generation of corr
 * Load the training dataset into feature matrix(X), class labels(Y, -1 or 1), and event ids
 * Data preprocessing
      
-        - Split the data into 3 sub-datasets based on 'PRI_jet_num' (0, 1, 2 & 3 for each sub-dataset)
+        - Split the data into 4 sub-datasets based on 'PRI_jet_num' (0, 1, 2, 3 for each sub-dataset)
         - impute the missing values with k-means clustering 
         - Standardize the sub-datasets by column means and standard deviations
 
