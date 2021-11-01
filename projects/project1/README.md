@@ -94,7 +94,7 @@ We reserved the block outputs to show the hyperparameter setting with metrics fo
 
 
 ## Best Performance
-Our best model: Ridge Regression with imputation through k-means clustering, test accuracy: 0.803, F1 score: 0.689
+Our best model: Ridge Regression with imputation through k-means clustering, test accuracy: 0.803, F1 score: 0.685
 
 
 ## Authors
