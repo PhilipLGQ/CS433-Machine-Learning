@@ -10,7 +10,15 @@ In this project, we train an equal-weight ensemble U-Net classifier to segment r
 pip install -r requirements.txt
 ```
 * To train from scratch, please download the dataset from [AICrowd](https://www.aicrowd.com/challenges/epfl-ml-road-segmentation/dataset_files) and extract them under both `data/` and  `data_segnet/` directory. Only test images are required if you use pretrained models to generate the result. 
-* Download our pretrained models from [here](), please make sure they are placed under `weights/`. 
+* Download our pretrained models from [here](), please make sure they are placed under `weights/`. Execute directly in Python IDE (e.g. PyCharm) or run the following to get the submission csv and predicted masks:
+```bash
+python run.py
+```
+If you want to train from scratch, please execute the following to get all models as we provided in the link:
+```bash
+python train_UNet.py
+python train_SegNet.py
+```
 
 ## Files
 ### `run.py`
