@@ -1,4 +1,4 @@
-# Project Road Segmentation
+# Machine Learning Project 2 (2021): Aerial Road Segmentation
 
 For this choice of project task, we provide a set of satellite images acquired 
 from GoogleMaps. We also provide ground-truth images where each pixel is labeled 
@@ -7,6 +7,8 @@ as road or background.
 Your task is to train a classifier to segment roads in these images, i.e. 
 assigns a label `road=1, background=0` to each pixel.
 
+
+## Getting Started
 Submission system environment setup:
 
 1. The dataset is available from the 
@@ -30,3 +32,19 @@ prediction task.
 
 Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
+ 
+ 
+## Running Prerequisites
+
+
+## Implementation Details
+
+
+## Model Performance
+Our best model: Ridge Regression with imputation through k-means clustering, test accuracy: 0.803, F1 score: 0.685
+
+
+## Authors
+* *Guanqun Liu*
+* [*Xianjie Dai*](https://github.com/xianjiedai)
+* [*Yixuan Xu*](https://github.com/Alvorecer721)
