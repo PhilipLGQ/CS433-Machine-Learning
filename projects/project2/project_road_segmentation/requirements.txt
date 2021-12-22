@@ -1,0 +1,7 @@
+numpy
+tensorflow
+keras
+Pillow
+h5py==2.10.0
+pytorch
+torch torchvision torchaudio
