@@ -1,34 +1,15 @@
 # Machine Learning Project 2 (2021): Aerial Road Segmentation
 
-For this choice of project task, we provide a set of satellite images acquired 
-from GoogleMaps. We also provide ground-truth images where each pixel is labeled 
-as road or background. 
-
-Your task is to train a classifier to segment roads in these images, i.e. 
-assigns a label `road=1, background=0` to each pixel.
-
+## Introduction
+In this project, we train an equal-weight concatenated U-Net classifier to segment road regions from real satellite images cropped from Google Map. Besides, we also implement several single segmentation networks to compare the performance. The training set includes 100 satellite images of size 400x400, each corresponding to a binary-color mask image showing the groundtruth road region. After the training process, we generate prediction masks on 50 test images of size 608x608. These masks are then cropped into small patches of size 16x16 and are transformed into a .csv file with patch-mean based thresholding (road=1, background=0). 
 
 ## Getting Started
-Submission system environment setup:
+Provided scripts and model training are built and tested under Anaconda virtual environment with Python 3.7.11. In order to reproduce our best submission result to AICrowd with pretrained models. Please make sure the packages in `requirements.txt` are properly installed.
 
-1. The dataset is available from the 
-[CrowdAI page](https://www.crowdai.org/challenges/epfl-ml-road-segmentation).
+```bash
+pip install -r requirements.txt
+```
 
-2. Obtain the python notebook `segment_aerial_images.ipynb` from this github 
-folder, to see example code on how to extract the images as well as 
-corresponding labels of each pixel.
-
-The notebook shows how to use `scikit learn` to generate features from each 
-pixel, and finally train a linear classifier to predict whether each pixel is 
-road or background. Or you can use your own code as well. Our example code here 
-also provides helper functions to visualize the images, labels and predictions. 
-In particular, the two functions `mask_to_submission.py` and 
-`submission_to_mask.py` help you to convert from the submission format to a 
-visualization, and vice versa.
-
-3. As a more advanced approach, try `tf_aerial_images.py`, which demonstrates 
-the use of a basic convolutional neural network in TensorFlow for the same 
-prediction task.
 
 Evaluation Metric:
  [F1 score](https://en.wikipedia.org/wiki/F1_score)
