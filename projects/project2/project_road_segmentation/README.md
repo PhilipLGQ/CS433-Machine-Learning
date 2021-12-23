@@ -29,7 +29,7 @@ then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file 
 
 ## Files
 ### `run.py`
-Generates our best submission (.csv file) with pretrained models (all 3 U-Net models needed). Generated masks and the csv submission file will be restored under `pred_imgs/` and `submission/` respectively.
+Generates our best submission (.csv file) with pretrained models (all 3 U-Net models needed). Generated masks and the csv submission file will be restored under `pred_imgs/` and `submission/` respectively. Please make sure testing data is extracted under `data/`.
 
 ### `dataset_UNet.py`
 Includes helper functions for U-Net data loading, data augmentation, data rescaling, and data saving.
@@ -37,24 +37,36 @@ Includes helper functions for U-Net data loading, data augmentation, data rescal
 ### `dataset_SegNet.py`
 Includes helper functions for SegNet data loading, data augmentation, data rescaling, and data saving.
 
+### `metric_loss.py`
+Includes functions for F1-score calculation and dice loss calculation.
+
+### `train_UNet`
+Train U-Net models from scratch, please make sure training data is extracted under `data/`.
+
+### `generate_Seg.py`
+Generate training set and test set from 
+
+### `train_SegNet.py`
+Train SegNet model from scratch, please make sure training data is extracted under `data_segnet/`.
+
+### `SegNet_predict.py`
+Generate and save predicted masks of SegNet, please make sure testing data is extracted under `data_segnet/`
+
+### `mask_to_submission.py`
+Includes helper functions for generating the submission csv file.
+
 ### `model/`
 * **`SegNet.py`**: Standard SegNet model, with encoder blocks and decoder blocks
 * **`UNet.py`**: Overfitting optimized U-Net model, add dropout and batch normalizaation layers after "deconvolution".
 * **`dilated_UNet`**: U-Net model with parallel dilated convolution module at network "bottom", inspired by [[1]](#1).
 
-### `train_UNet`
-Train U-Net models from scratch, please make sure training data is extracted under `data/`.
-
-### `train_SegNet`
-Train SegNet model from scratch, please make sure training data is extracted under `data_segnet/`.
-
-### `mask_to_submission`
-Includes helper functions for generating the submission csv file.
+### `data/`, `data_segnet/`
+Restores training data and test data for UNet and SegNet respectively. 
 
 
 ## Best Model Performance
 * **`Model`**: Equal-Weight Ensemble U-Net
-* **`Submission ID`**: , **`Submission Username`**:
+* **`Submission ID`**: xianjiedai , **`Submission Username`**: 169451
 * Performance: **`F1 Score`**: 0.903, **`Accuracy`**: 0.949
 
 
