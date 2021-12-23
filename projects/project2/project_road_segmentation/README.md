@@ -44,7 +44,7 @@ Includes functions for F1-score calculation and dice loss calculation.
 Train U-Net models from scratch, please make sure training data is extracted under `data/`.
 
 ### `generate_Seg.py`
-Generate training set and test set from 
+Generate training set and test set for SegNet training under `data_segnet/`
 
 ### `train_SegNet.py`
 Train SegNet model from scratch, please make sure training data is extracted under `data_segnet/`.
