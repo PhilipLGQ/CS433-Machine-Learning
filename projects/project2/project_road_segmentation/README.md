@@ -29,7 +29,7 @@ then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file 
 
 ## File & Directory
 ### `run.py`
-Generates our best submission (.csv file) with pretrained models (all 3 U-Net models needed). Generated masks and the csv submission file will be restored under `pred_imgs/` and `submission/` respectively. Please make sure testing data is extracted under `data/`.
+Generates our best submission (.csv file) with pretrained models (all 3 U-Net models needed). Generated masks and the csv submission file will be restored under `data/prediction/` and `submission/` respectively. Please make sure testing data is extracted under `data/`.
 
 ### `dataset_UNet.py`
 Includes helper functions for U-Net data loading, data augmentation, data rescaling, and data saving.
