@@ -24,10 +24,10 @@ python train_UNet.py
 python generate_Seg.py
 python train_Seg.py
 ```
-then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file under `submission/`
+then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file under `submission/`, prediction masks of UNet: `data/prediction/`, prediction masks of SegNet `data_segnet/prediction/`.
 
 
-## Files
+## File & Directory
 ### `run.py`
 Generates our best submission (.csv file) with pretrained models (all 3 U-Net models needed). Generated masks and the csv submission file will be restored under `pred_imgs/` and `submission/` respectively. Please make sure testing data is extracted under `data/`.
 
@@ -63,12 +63,20 @@ Includes helper functions for generating the submission csv file.
 ### `data/`, `data_segnet/`
 Restores training data and test data for UNet and SegNet respectively. 
 
+### `checkpoint/`
+* **`model/`**: Save SegNet checkpoint models at each epoch. Please make sure the SegNet pretrained model is placed here to generate result directly.
+* SegNet checkpoint output (predicted masks according to current weights) will generate here.
+
+### `weights/`
+Save UNet models here. Please make sure the UNet pretrained models are placed here to generate result directly
+
+### `submission/`
+Generates submission csv file here. 
 
 ## Best Model Performance
 * **`Model`**: Equal-Weight Ensemble U-Net
 * **`Submission ID`**: xianjiedai , **`Submission Username`**: 169451
 * Performance: **`F1 Score`**: 0.903, **`Accuracy`**: 0.949
-
 
 ## Authors
 * *Guanqun Liu*
