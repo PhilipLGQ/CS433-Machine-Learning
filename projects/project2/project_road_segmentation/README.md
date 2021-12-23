@@ -21,7 +21,7 @@ python SegNet_predict.py
 * If you want to train from scratch, please execute the following to train all UNet models and the SegNet model:
 ```bash
 python train_UNet.py
-python generate_SegNet_training_set.py
+python generate_Seg.py
 python train_Seg.py
 ```
 then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file under `submission/`
