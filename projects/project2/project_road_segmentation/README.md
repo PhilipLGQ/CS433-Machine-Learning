@@ -56,7 +56,7 @@ Generate and save predicted masks of SegNet, please make sure testing data is ex
 Includes helper functions for generating the submission csv file.
 
 ### `model/`
-* **`SegNet.py`**: Standard SegNet model, with encoder blocks and decoder blocks
+* **`seg_net.py`**: Standard SegNet model, with encoder blocks and decoder blocks
 * **`UNet.py`**: Overfitting optimized U-Net model, add dropout and batch normalizaation layers after "deconvolution".
 * **`dilated_UNet`**: U-Net model with parallel dilated convolution module at network "bottom", inspired by [[1]](#1).
 
