@@ -40,7 +40,7 @@ Includes helper functions for SegNet data loading, data augmentation, data resca
 ### `metric_loss.py`
 Includes functions for F1-score calculation and dice loss calculation.
 
-### `train_UNet`
+### `train_UNet.py`
 Train U-Net models from scratch, please make sure training data is extracted under `data/`.
 
 ### `generate_Seg.py`
