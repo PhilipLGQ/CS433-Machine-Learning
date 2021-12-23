@@ -10,15 +10,22 @@ In this project, we train an equal-weight ensemble U-Net classifier to segment r
 pip install -r requirements.txt
 ```
 * To train from scratch, please download the dataset from [AICrowd](https://www.aicrowd.com/challenges/epfl-ml-road-segmentation/dataset_files) and extract them under both `data/` and  `data_segnet/` directory. Only test images are required if you use pretrained models to generate the result. 
-* Download our pretrained models from [here](), please make sure they are placed under `weights/`. Execute directly in Python IDE (e.g. PyCharm) or run the following to get the submission csv and predicted masks:
+* Download our pretrained models from [UNet here](https://drive.google.com/file/d/1kMt53JgvZkGScvjtHSgpJbElNd7sSDTX/view?usp=sharing) and [SegNet here](https://drive.google.com/file/d/14LWOf0vvGJZuv97c1HWh49lH1ZdspYZX/view?usp=sharing), please make sure UNet models are placed under `weights/` and the SegNet model is placed under `checkpoint/Segnet/model`. Execute directly in Python IDE (e.g. PyCharm) or run the following to get the submission csv and predicted masks (UNet):
 ```bash
 python run.py
 ```
-If you want to train from scratch, please execute the following to get all models as we provided in the link:
+* If you want to check the predicted masks of SegNet with pretrained model, please execute
+```bash
+python SegNet_predict.py
+```
+* If you want to train from scratch, please execute the following to train all UNet models and the SegNet model:
 ```bash
 python train_UNet.py
-python train_SegNet.py
+python generate_SegNet_training_set.py
+python train_Seg.py
 ```
+then execute `run.py` and `SegNet_predict.py` to obtain the prediction csv file under `submission/`
+
 
 ## Files
 ### `run.py`
